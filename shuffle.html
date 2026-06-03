@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function shuffle(arr) {
+        let tempArr = [];
+
+        for (let i = 0; i < arr.length; i++) {
+          let randomIndex = Math.floor(Math.random() * 3 + 1) - 1;
+
+          if (tempArr[randomIndex] !== undefined) {
+            i--; // retry current element
+          } else {
+            tempArr[randomIndex] = arr[i];
+          }
+        }
+
+        return tempArr;
+      }
+
+      // counts of appearances for all possible permutations
+      const count = {
+        123: 0,
+        132: 0,
+        213: 0,
+        231: 0,
+        312: 0,
+        321: 0,
+      };
+
+      const ITERATIONS = 1_000_000;
+
+      for (let i = 0; i < ITERATIONS; i++) {
+        const array = [1, 2, 3];
+        const shuffled = shuffle(array);
+
+        count[shuffled.join("")]++;
+      }
+
+      // show counts and percentages
+      for (const key in count) {
+        const percentage = ((count[key] / ITERATIONS) * 100).toFixed(4);
+
+        console.log(`${key}: ${count[key]} (${percentage}%)`);
+      }
+    </script>
+  </body>
+</html>
