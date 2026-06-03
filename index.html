@@ -6,9 +6,50 @@
     <title>Document</title>
   </head>
   <body>
+    <div class="container">
+      <button id="rock">Rock</button>
+      <button id="paper">Paper</button>
+      <button id="scissors">Scissors</button>
+
+      <div class="score"></div>
+    </div>
     <script>
       let humanScore = 0;
       let computerScore = 0;
+      const buttons = document.querySelectorAll("button");
+      const container = document.querySelector(".container");
+
+      const score = document.querySelector(".score");
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+          e.stopPropagation();
+          score.replaceChildren();
+
+          const compuerSelection = getComputerChoice();
+          let yourChoosed = document.createElement("p");
+          yourChoosed.textContent = "You: " + e.target.id;
+          score.appendChild(yourChoosed);
+
+          let computerChoosed = document.createElement("p");
+          computerChoosed.textContent = "Computer: " + compuerSelection;
+          score.appendChild(computerChoosed);
+
+          let result = document.createElement("p");
+          result.textContent = playRound(e.target.id, compuerSelection);
+          score.appendChild(result);
+
+          if (humanScore === 5) {
+            alert("You Win!");
+            humanScore = 0;
+            computerScore = 0;
+          } else if (computerScore === 5) {
+            alert("You Lose!");
+            humanScore = 0;
+            computerScore = 0;
+          }
+        });
+      });
 
       function getComputerChoice() {
         const choice = Math.floor(Math.random() * 3 + 1);
@@ -29,28 +70,30 @@
       }
 
       function playRound(humanChoice, computerChoice) {
-        console.log("You:  " + humanChoice);
-        console.log("Computer:  " + computerChoice);
+        let result = "";
         if (humanChoice === computerChoice) {
-          console.log("Its a Tie");
+          result = "Its a Tie";
         } else {
           if (humanChoice === "rock" && computerChoice === "scissors") {
             humanScore++;
-            console.log("You Win!");
+            result = "You Win!";
           } else if (humanChoice === "paper" && computerChoice === "rock") {
             humanScore++;
-            console.log("You Win!");
+            result = "You Win!";
           } else if (humanChoice === "scissors" && computerChoice === "paper") {
             humanScore++;
-            console.log("You Win!");
+            result = "You Win!";
           } else {
             computerScore++;
-            console.log("You Lose!");
+            result = "You Lose!";
           }
         }
+
+        return (result +=
+          " You: " + humanScore + " Computer: " + computerScore);
       }
 
-      const humanSelection = getHumanChoice();
+      const humanSelection = "paper";
       const computerSelection = getComputerChoice();
 
       playRound(humanSelection, computerSelection);
@@ -69,27 +112,6 @@
         arr = tempArr;
 
         return arr;
-      }
-
-      // counts of appearances for all possible permutations
-      let count = {
-        123: 0,
-        132: 0,
-        213: 0,
-        231: 0,
-        321: 0,
-        312: 0,
-      };
-
-      for (let i = 0; i < 1000000; i++) {
-        let array = [1, 2, 3];
-        shuffle(array);
-        count[array.join("")]++;
-      }
-
-      // show counts of all possible permutations
-      for (let key in count) {
-        console.log(`${key}: ${count[key]}`);
       }
     </script>
   </body>
