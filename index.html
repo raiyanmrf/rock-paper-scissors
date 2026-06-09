@@ -11,41 +11,83 @@
 
 
   <style>
+    h1 {
+      font: 2rem sans-serif;
+    }
+
+
+    h2 {
+      font: 2rem sans-serif;
+
+    }
+
     .container {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
     }
 
     .buttons {
       display: flex;
       flex-flow: row wrap;
+      gap: 20px;
     }
 
     button {
-      background-color: white;
-      border-color: white;
-      font-size: 2rem;
+      background-color: rgb(255, 255, 255);
+      border: none;
+      font-size: 3rem;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+    }
+
+    button:hover {
+
+      transform: scale(1.1);
     }
   </style>
+
   <div class="container">
+    <h1>SHOOT !</h1>
+
+
+
+
+
     <div class="buttons">
 
-      <button id="rock">Rock 👊 <utton>
-          <button id="paper">Paper 📃</button>
-          <button id="scissors">Scissors ✂️</button>
+      <button id="rock">👊 <utton>
+          <button id="paper">📃</button>
+          <button id="scissors">✂️</button>
     </div>
 
-    <div class="score"></div>
+    <hr>
+    <div class="current-score"></div>
+
+    <hr>
+
+    <h2><span>You: <strong id="humanScore">0</strong></span> <span>Computer: <strong
+          id="computerScore">0</strong></span></h2>
+
+
+
   </div>
   <script>
     let humanScore = 0;
     let computerScore = 0;
+    const buttonDiv = document.querySelector(".buttons");
     const buttons = document.querySelectorAll("button");
     const container = document.querySelector(".container");
+    const humanScoreText = document.querySelector("#humanScore");
+    const computerScoreText = document.querySelector("#computerScore");
 
-    const score = document.querySelector(".score");
+    const score = document.querySelector(".current-score");
 
     buttons.forEach((button) => {
       button.addEventListener("click", (e) => {
@@ -54,27 +96,45 @@
         const compuerSelection = getComputerChoice();
         const yourEmoji = e.target.id == 'rock' ? '👊' : e.target.id == 'paper' ? '📃' : '✂️';
         const computerEmoji = compuerSelection == 'rock' ? '👊' : compuerSelection == 'paper' ? '📃' : '✂️';
-        let yourChoosed = document.createElement("p");
-        yourChoosed.textContent = "You: " + yourEmoji;
+        let yourChoosed = document.createElement("h2");
+        // yourChoosed.textContent = "You: " + yourEmoji;
         score.appendChild(yourChoosed);
 
-        let computerChoosed = document.createElement("p");
-        computerChoosed.textContent = "Computer: " + computerEmoji;
+        let computerChoosed = document.createElement("h2");
+        // computerChoosed.textContent = "Computer: " + computerEmoji;
         score.appendChild(computerChoosed);
 
-        let result = document.createElement("p");
+        let result = document.createElement("h2");
         result.textContent = playRound(e.target.id, compuerSelection);
         score.appendChild(result);
+
+
+
+
+        humanScoreText.textContent = humanScore;
+        computerScoreText.textContent = computerScore;
 
         if (humanScore === 5) {
           alert("You Win!");
           humanScore = 0;
           computerScore = 0;
+
+          score.textContent = "";
+
+
         } else if (computerScore === 5) {
           alert("You Lose!");
           humanScore = 0;
           computerScore = 0;
+
+          score.textContent = "";
         }
+
+
+        humanScoreText.textContent = humanScore;
+        computerScoreText.textContent = computerScore;
+
+
       });
     });
 
@@ -97,27 +157,44 @@
     }
 
     function playRound(humanChoice, computerChoice) {
+
+
+      const yourEmoji = humanChoice.toLowerCase() == 'rock' ? '👊' : humanChoice.toLowerCase() == 'paper' ? '📃' : '✂️';
+      const computerEmoji = computerChoice.toLowerCase() == 'rock' ? '👊' : computerChoice.toLowerCase() == 'paper' ? '📃' : '✂️';
+      let emoji = yourEmoji + " " + computerEmoji + " ";
       let result = "";
       if (humanChoice === computerChoice) {
         result = "Its a Tie";
-      } else {
-        if (humanChoice === "rock" && computerChoice === "scissors") {
-          humanScore++;
-          result = "You Win!";
-        } else if (humanChoice === "paper" && computerChoice === "rock") {
-          humanScore++;
-          result = "You Win!";
-        } else if (humanChoice === "scissors" && computerChoice === "paper") {
-          humanScore++;
-          result = "You Win!";
-        } else {
-          computerScore++;
-          result = "You Lose!";
-        }
+        return emoji + " " + result;
       }
 
-      return (result +=
-        " You: " + humanScore + " Computer: " + computerScore);
+
+
+      if (humanChoice === "rock" && computerChoice === "scissors") {
+        humanScore++;
+        result = "You Win!";
+      } else if (humanChoice === "paper" && computerChoice === "rock") {
+        humanScore++;
+        result = "You Win!";
+      } else if (humanChoice === "scissors" && computerChoice === "paper") {
+        humanScore++;
+        result = "You Win!";
+      }
+      else if (computerChoice === "rock" && humanChoice === "scissors") {
+        computerScore++;
+        result = "You Lose!";
+      } else if (computerChoice === "paper" && humanChoice === "rock") {
+        computerScore++;
+        result = "You Lose!";
+      } else if (computerChoice === "scissors" && humanChoice === "paper") {
+        computerScore++;
+        result = "You Lose!";
+      }
+
+
+
+
+      return emoji + " " + result;
     }
 
     const humanSelection = "paper";
