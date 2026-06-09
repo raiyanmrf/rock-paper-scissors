@@ -1,118 +1,146 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div class="container">
-      <button id="rock">Rock</button>
-      <button id="paper">Paper</button>
-      <button id="scissors">Scissors</button>
 
-      <div class="score"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .buttons {
+      display: flex;
+      flex-flow: row wrap;
+    }
+
+    button {
+      background-color: white;
+      border-color: white;
+      font-size: 2rem;
+    }
+  </style>
+  <div class="container">
+    <div class="buttons">
+
+      <button id="rock">Rock 👊 <utton>
+          <button id="paper">Paper 📃</button>
+          <button id="scissors">Scissors ✂️</button>
     </div>
-    <script>
-      let humanScore = 0;
-      let computerScore = 0;
-      const buttons = document.querySelectorAll("button");
-      const container = document.querySelector(".container");
 
-      const score = document.querySelector(".score");
+    <div class="score"></div>
+  </div>
+  <script>
+    let humanScore = 0;
+    let computerScore = 0;
+    const buttons = document.querySelectorAll("button");
+    const container = document.querySelector(".container");
 
-      buttons.forEach((button) => {
-        button.addEventListener("click", (e) => {
-          e.stopPropagation();
-          score.replaceChildren();
+    const score = document.querySelector(".score");
 
-          const compuerSelection = getComputerChoice();
-          let yourChoosed = document.createElement("p");
-          yourChoosed.textContent = "You: " + e.target.id;
-          score.appendChild(yourChoosed);
+    buttons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        score.replaceChildren();
+        const compuerSelection = getComputerChoice();
+        const yourEmoji = e.target.id == 'rock' ? '👊' : e.target.id == 'paper' ? '📃' : '✂️';
+        const computerEmoji = compuerSelection == 'rock' ? '👊' : compuerSelection == 'paper' ? '📃' : '✂️';
+        let yourChoosed = document.createElement("p");
+        yourChoosed.textContent = "You: " + yourEmoji;
+        score.appendChild(yourChoosed);
 
-          let computerChoosed = document.createElement("p");
-          computerChoosed.textContent = "Computer: " + compuerSelection;
-          score.appendChild(computerChoosed);
+        let computerChoosed = document.createElement("p");
+        computerChoosed.textContent = "Computer: " + computerEmoji;
+        score.appendChild(computerChoosed);
 
-          let result = document.createElement("p");
-          result.textContent = playRound(e.target.id, compuerSelection);
-          score.appendChild(result);
+        let result = document.createElement("p");
+        result.textContent = playRound(e.target.id, compuerSelection);
+        score.appendChild(result);
 
-          if (humanScore === 5) {
-            alert("You Win!");
-            humanScore = 0;
-            computerScore = 0;
-          } else if (computerScore === 5) {
-            alert("You Lose!");
-            humanScore = 0;
-            computerScore = 0;
-          }
-        });
+        if (humanScore === 5) {
+          alert("You Win!");
+          humanScore = 0;
+          computerScore = 0;
+        } else if (computerScore === 5) {
+          alert("You Lose!");
+          humanScore = 0;
+          computerScore = 0;
+        }
       });
+    });
 
-      function getComputerChoice() {
-        const choice = Math.floor(Math.random() * 3 + 1);
+    function getComputerChoice() {
+      const choice = Math.floor(Math.random() * 3 + 1);
 
-        switch (choice) {
-          case 1:
-            return "rock";
-          case 2:
-            return "paper";
-          case 3:
-            return "scissors";
-        }
+      switch (choice) {
+        case 1:
+          return "rock";
+        case 2:
+          return "paper";
+        case 3:
+          return "scissors";
       }
+    }
 
-      function getHumanChoice() {
-        const choice = prompt("Rock, Paper, Scissors, Shoot!");
-        return choice.toLowerCase();
-      }
+    function getHumanChoice() {
+      const choice = prompt("Rock, Paper, Scissors, Shoot!");
+      return choice.toLowerCase();
+    }
 
-      function playRound(humanChoice, computerChoice) {
-        let result = "";
-        if (humanChoice === computerChoice) {
-          result = "Its a Tie";
+    function playRound(humanChoice, computerChoice) {
+      let result = "";
+      if (humanChoice === computerChoice) {
+        result = "Its a Tie";
+      } else {
+        if (humanChoice === "rock" && computerChoice === "scissors") {
+          humanScore++;
+          result = "You Win!";
+        } else if (humanChoice === "paper" && computerChoice === "rock") {
+          humanScore++;
+          result = "You Win!";
+        } else if (humanChoice === "scissors" && computerChoice === "paper") {
+          humanScore++;
+          result = "You Win!";
         } else {
-          if (humanChoice === "rock" && computerChoice === "scissors") {
-            humanScore++;
-            result = "You Win!";
-          } else if (humanChoice === "paper" && computerChoice === "rock") {
-            humanScore++;
-            result = "You Win!";
-          } else if (humanChoice === "scissors" && computerChoice === "paper") {
-            humanScore++;
-            result = "You Win!";
-          } else {
-            computerScore++;
-            result = "You Lose!";
-          }
+          computerScore++;
+          result = "You Lose!";
         }
-
-        return (result +=
-          " You: " + humanScore + " Computer: " + computerScore);
       }
 
-      const humanSelection = "paper";
-      const computerSelection = getComputerChoice();
+      return (result +=
+        " You: " + humanScore + " Computer: " + computerScore);
+    }
 
-      playRound(humanSelection, computerSelection);
-    </script>
+    const humanSelection = "paper";
+    const computerSelection = getComputerChoice();
 
-    <script>
-      let arr = [1, 2, 3];
+    playRound(humanSelection, computerSelection);
+  </script>
 
-      function shuffle(arr) {
-        let tempArr = [];
-        for (let i = 0; i < arr.length; i++) {
-          let randomIndex = Math.floor(Math.random() * 3 + 1) - 1;
-          if (tempArr[randomIndex]) i--;
-          else tempArr[randomIndex] = arr[i];
-        }
-        arr = tempArr;
+  <script>
+    let arr = [1, 2, 3];
 
-        return arr;
+    function shuffle(arr) {
+      let tempArr = [];
+      for (let i = 0; i < arr.length; i++) {
+        let randomIndex = Math.floor(Math.random() * 3 + 1) - 1;
+        if (tempArr[randomIndex]) i--;
+        else tempArr[randomIndex] = arr[i];
       }
-    </script>
-  </body>
+      arr = tempArr;
+
+      return arr;
+    }
+  </script>
+</body>
+
 </html>
